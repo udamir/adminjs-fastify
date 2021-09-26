@@ -113,12 +113,12 @@ Plugin can be pre-configured with following options:
     }
 
     /**
-     * multipart options - pass through params to [fastify-multipart](https://github.com/fastify/fastify-multipart) plugin
+     * multipart options - pass through params to fastify-multipart plugin
      */ 
     multipartOptions?: FastifyMultipartBaseOptions
 
     /**
-     * session options - pass through params to [@fastify/session](https://github.com/fastify/session) plugin
+     * session options - pass through params to @fastify/session plugin
      */ 
     sessionOptions?: FastifySessionPlugin.Options
   })
