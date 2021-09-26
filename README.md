@@ -75,39 +75,33 @@ Plugin can be pre-configured with following options:
   type AdminRouterOptions = {
     /**
      * instance of {@link AdminJS}
-     * @required
      */
     admin: AdminJS
 
     /** 
      * authentication parameters
-     * @optional
      */
     auth?: {
       /**
        * cookie secret - minimum length of 32 characters
-       * @required
        */
       cookiePassword: string
 
       /**
        * cookie name
-       * @optional
        * @default: "adminJS"
        */
       cookieName?: string
 
       /**
        * secure cookie 
-       * @optional
        * @default: false
        */
       cookieSecure?: boolean
 
       /**
        * authentication check function
-       * @required
-       * @returns: user data or null
+       * @return: user data or null
        */
       authenticate: (email: string, password: string) => unknown | null
     }
