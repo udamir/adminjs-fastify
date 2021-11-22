@@ -118,7 +118,8 @@ export const adminRoute: FastifyPluginAsync<AdminRouterOptions> = async (
       } else {
         // If the redirection is caused by API call to some action just redirect to resource
         const [redirectTo] = req.url.split("/actions")
-        req.session.redirectTo = redirectTo.includes(`${rootPath}/api`)
+        const apiPath = path.join(rootPath, '/api')
+        req.session.redirectTo = redirectTo.includes(apiPath)
           ? rootPath
           : redirectTo
         return reply.redirect(loginPath)
@@ -129,10 +130,11 @@ export const adminRoute: FastifyPluginAsync<AdminRouterOptions> = async (
   const { routes, assets } = AdminRouter
 
   routes.forEach((route) => {
+    const fullPath = path.join("/", rootPath,route.path.replace(/{/g, ":").replace(/}/g, ""))
     const fastifyRoute: RouteOptions = {
       method: route.method as HTTPMethods,
       // we have to change routes defined in AdminJS from {recordId} to :recordId
-      url: rootPath + route.path.replace(/{/g, ":").replace(/}/g, "") || "/",
+      url: fullPath,
       handler: async (request, reply) => {
         const controller = new route.Controller(
           { admin },
@@ -177,7 +179,8 @@ export const adminRoute: FastifyPluginAsync<AdminRouterOptions> = async (
   })
 
   assets.forEach((asset) => {
-    fastify.get(rootPath + asset.path, (req, reply) => {
+    const fullPath = path.join(rootPath, asset.path)
+    fastify.get(fullPath, (req, reply) => {
       const type = mime.getType(path.resolve(asset.src)) || "text/plain"
       const file = fs.readFileSync(path.resolve(asset.src))
       reply.type(type).send(file)
